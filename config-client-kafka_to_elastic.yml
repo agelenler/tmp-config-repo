@@ -10,22 +10,25 @@ kafka-config:
     - twitter-topic
 
 kafka-consumer-config:
-  key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
-  value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
-  consumer-group-id: twitter-topic-consumer
-  auto-offset-reset: earliest
-  specific-avro-reader-key: specific.avro.reader
+  key-deserializer: org.apache.kafka.common.serialization.LongDeserializer # since we will read data from topic, in consumers we need deserializer to read key (Long) according to key type, ...
+  value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer # ... and to read value we define Avro type which is the same as in KafkaAvro deserializer
+  consumer-group-id: twitter-topic-consumer # this prop ensures that we do not start reading from beginning each time, but instead offset remains for the last red item
+  auto-offset-reset: earliest # means that we want to start reading from the beginning of the partition
+  specific-avro-reader-key: specific.avro.reader # setting property to true means we want to read with our Avro reader
   specific-avro-reader: true
-  batch-listener: true
-  auto-startup: false
-  concurrency-level: 3
-  session-timeout-ms: 10000
-  heartbeat-interval-ms: 3000
-  maxPollInterval-ms: 300000
-  max-poll-records: 500
-  max-partition-fetch-bytes-default: 1048576
+  batch-listener: true # this prop allows to consume the data in batches
+  auto-startup: false # we want start listening from topic, after checking topic is already created and active, with false we will start listening at certain point in time
+  concurrency-level: 3 # set the number of threads to work on consuming; e.g. 1 topic, 3 partitions -> set as 3; required for maximum efficiency and higher throughput; bigger number of threads means all extra threads will stay idle
+  session-timeout-ms: 10000 # prop for thread heartbeat, specifies time rang in which broker needs to get at least one heartbeat signal from consumer before consumer is marked as dead, default value is 10 seconds
+  heartbeat-interval-ms: 3000 # prop specifies of consumer sending heartbeat signal to broker, default value is 3 seconds
+  max-poll-interval-ms: 300000 # prop for user threads, if message processing logic is too heavy consumer leaves the group and re-balance starts
+  max-poll-records: 500 # sets maximum records to fetch in each poll
+  max-partition-fetch-bytes-default: 1048576 # maximum bytes to fetch in each poll
   max-partition-fetch-bytes-boost-factor: 1
-  poll-timeout-ms: 150
+  poll-timeout-ms: 150 # this timeout determines how long we will wait until at least one record is available when we call the poll method on consumer; to optimize it, having a value around 100ms is recommended
+  # it will wait in the poll method of the Kafka consumer this amount of time for the new records
+  # setting this value TOO HIGH will block consuming in reasonable amount of time, and ...
+  # ... setting this value TOO LOW will cause CPU stall (cpu will be checking for new records most of the time)
 
 retry-config:
   inital-interval-ms: 1000
