@@ -1,3 +1,6 @@
+server:
+  port: 8181
+
 # I want to get twits from Twitter related to these keywords
 twitter-to-kafka-service:
   twitter-keywords:
