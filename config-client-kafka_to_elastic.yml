@@ -17,7 +17,7 @@ kafka-consumer-config:
   specific-avro-reader-key: specific.avro.reader # setting property to true means we want to read with our Avro reader
   specific-avro-reader: true
   batch-listener: true # this prop allows to consume the data in batches
-  auto-startup: false # we want start listening from topic, after checking topic is already created and active, with false we will start listening at certain point in time
+  auto-startup: true # we want start listening from topic, after checking topic is already created and active, with false we will start listening at certain point in time
   concurrency-level: 3 # set the number of threads to work on consuming; e.g. 1 topic, 3 partitions -> set as 3; required for maximum efficiency and higher throughput; bigger number of threads means all extra threads will stay idle
   session-timeout-ms: 10000 # prop for thread heartbeat, specifies time rang in which broker needs to get at least one heartbeat signal from consumer before consumer is marked as dead, default value is 10 seconds
   heartbeat-interval-ms: 3000 # prop specifies of consumer sending heartbeat signal to broker, default value is 3 seconds
@@ -36,3 +36,9 @@ retry-config:
   multiplier: 2.0
   maxAttempts: 3
   sleep-time-ms: 2000
+
+elastic-config:
+  index-name: twitter-index
+  connection-url: http://localhost:9200
+  connect-timeout-ms: 5000
+  socket-timeout-ms: 30000
