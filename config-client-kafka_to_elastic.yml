@@ -31,10 +31,10 @@ kafka-consumer-config:
   # ... setting this value TOO LOW will cause CPU stall (cpu will be checking for new records most of the time)
 
 retry-config:
-  inital-interval-ms: 1000
+  initial-interval-ms: 1000
   max-interval-ms: 10000
   multiplier: 2.0
-  maxAttempts: 3
+  max-attempts: 3
   sleep-time-ms: 2000
 
 elastic-config:
