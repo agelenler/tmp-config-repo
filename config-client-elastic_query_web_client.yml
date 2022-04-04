@@ -19,5 +19,5 @@ spring:
 
 user-config: # needed for security configuration
   username: test
-  password: '{cipher}18758e589d33c3b5f903244901ecf617e3ec5df308ab9bc9eacc4638f5a3e94e'
+  password: '{cipher}d1136ee06e6b4905eb6d7eae56d07e43cfd83b4ab2ad7ec7ec1dd2e196f6da8e45d644c33b9218ac74527bc1df1758219f72e51839ece714f04bbbf42c90dd7002a89cfd36ea9190ffd07375336a2247'
   roles: USER
