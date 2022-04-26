@@ -26,7 +26,7 @@ spring:
 user-config: # needed for security configuration
   username: test
   # using encrypted password with JCE (See WebSecurityConfig.class)
-  # password: '{cipher}8a3bffc96be1241f6702cf5b3246b3b793d53f68b5d45016aa8e369ade5fca8d'
+  password: '{cipher}8a3bffc96be1241f6702cf5b3246b3b793d53f68b5d45016aa8e369ade5fca8d'
   # using BCrypted and then encrypted password with JCE
-  password: '{cipher}d1136ee06e6b4905eb6d7eae56d07e43cfd83b4ab2ad7ec7ec1dd2e196f6da8e45d644c33b9218ac74527bc1df1758219f72e51839ece714f04bbbf42c90dd7002a89cfd36ea9190ffd07375336a2247'
+  #password: '{cipher}d1136ee06e6b4905eb6d7eae56d07e43cfd83b4ab2ad7ec7ec1dd2e196f6da8e45d644c33b9218ac74527bc1df1758219f72e51839ece714f04bbbf42c90dd7002a89cfd36ea9190ffd07375336a2247'
   roles: USER
