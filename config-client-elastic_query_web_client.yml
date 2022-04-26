@@ -12,6 +12,10 @@ elastic-query-web-client: # this prefix requires class with prefix "elastic-quer
     content-type: 'application/vnd.api.v1+json' # default Content-Type and Accept type client will use
     accept-type: 'application/vnd.api.v1+json'
     base-url: 'http://elastic-query-service/elastic-query-service/documents' # base URL we want to connect to with this client
+  query-by-text:
+    method: POST
+    uri: "/get-document-by-text"
+    accept: ${elastic-query-web-client.webclient.accept-type} # using ${...} to reuse previously defined variable in YML
 
 spring:
   thymeleaf:
@@ -19,5 +23,8 @@ spring:
 
 user-config: # needed for security configuration
   username: test
+  # using encrypted password with JCE (See WebSecurityConfig.class)
+  # password: '{cipher}8a3bffc96be1241f6702cf5b3246b3b793d53f68b5d45016aa8e369ade5fca8d'
+  # using BCrypted and then encrypted password with JCE
   password: '{cipher}d1136ee06e6b4905eb6d7eae56d07e43cfd83b4ab2ad7ec7ec1dd2e196f6da8e45d644c33b9218ac74527bc1df1758219f72e51839ece714f04bbbf42c90dd7002a89cfd36ea9190ffd07375336a2247'
   roles: USER
