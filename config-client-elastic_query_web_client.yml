@@ -12,8 +12,19 @@ elastic-query-web-client: # this prefix requires class with prefix "elastic-quer
     content-type: 'application/vnd.api.v1+json' # default Content-Type and Accept type client will use
     accept-type: 'application/vnd.api.v1+json'
     # until the load balancer will be configured, we'll use localhost:8183
-    base-url: 'http://localhost:8183/elastic-query-service/documents'
-    #base-url: 'http://elastic-query-service/elastic-query-service/documents' # base URL we want to connect to with this client
+    #base-url: 'http://localhost:8183/elastic-query-service/documents' # was used before client side load balancer
+    base-url: 'http://elastic-query-service/elastic-query-service/documents' # base URL we want to connect to with this client
+    # add service name and instances for loadbalancer to use
+    service-id: elastic-query-service
+    instances:
+      -
+        id: elastic-query-service-1
+        host: localhost
+        port: 8183
+      -
+        id: elastic-query-service-2
+        host: localhost
+        port: 8185
   query-by-text:
     method: POST
     uri: "/get-document-by-text"
