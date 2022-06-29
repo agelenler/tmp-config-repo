@@ -14,6 +14,22 @@ spring:
         jwt:
           issuer-uri: http://localhost:9091/realms/microservices-realm
           jwk-set-uri: http://localhost:9091/realms/microservices-realm/protocol/openid-connect/certs
+  jpa:
+    open-in-view: false # by default, it is true, and it uses persistent context which is bad for performance
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL9Dialect
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=public&binaryTransfer=true&reWriteBatchedInserts=true # binaryTransfer=true for better performance; reWriteBatchedInserts=true runs all inserts on PG side in batches as long as they are in the same transaction
+    username: postgres
+    password: '{cipher}ac2b9c1c888e42a004bc5bd683feb7948ea18e4f5ebc9fc56c3a41b0c158eada' # encrypted 'postgres' from docker-compose/keycloak_authorization_server.yml
+    driver-class-name: org.postgresql.Driver
+    platform: postgres
+    schema: classpath:init-schema.sql
+    data: classpath:init-data.sql
+    initialization-mode: always # runs DB scripts each time app starts, which is ok for this demo use case
 
 elastic-query-config:
   text-field: text
