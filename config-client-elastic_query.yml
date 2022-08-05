@@ -15,7 +15,7 @@ spring:
           issuer-uri: http://localhost:9091/realms/microservices-realm
           jwk-set-uri: http://localhost:9091/realms/microservices-realm/protocol/openid-connect/certs
   jpa:
-    open-in-view: false # by default, it is true, and it uses persistent context which is bad for performance
+    open-in-view: false # by default, it is true, and it uses persistent context to stay opened which is bad for performance
     show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     properties:
