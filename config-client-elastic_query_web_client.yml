@@ -33,7 +33,23 @@ elastic-query-web-client: # this prefix requires class with prefix "elastic-quer
 spring:
   thymeleaf:
     cache: false # setting Thymeleaf cache to false allows Thymeleaf web page to be reloaded when there are changes during development
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: 'elastic-query-web-client'
+            client-secret: '{cipher}36182cbff220c79c33e333606b1bb5a535261f03a269655662f45245bcbdc876ac4196ec3b139ad11f65c84e0c211845ae2cefcfb2dc418ccef2c8082a73a392'
+            authorization-grant-type: authorization_code
+            redirect-uri: '{baseUrl}/login/oauth2/code/{registrationId}'
+            scope: openid
+        provider:
+          keycloak:
+            issuerUri: http://localhost:9091/realms/microservices-realm
 
+security:
+  logout-success-url: http://localhost:8184/elastic-query-web-client
+  default-client-registration-id: keycloak
 user-config: # needed for security configuration
   username: test
   # using encrypted password with JCE (See WebSecurityConfig.class)
