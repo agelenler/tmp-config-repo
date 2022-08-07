@@ -21,10 +21,6 @@ elastic-query-web-client: # this prefix requires class with prefix "elastic-quer
         id: elastic-query-service-1
         host: localhost
         port: 8183
-      -
-        id: elastic-query-service-2
-        host: localhost
-        port: 8185
   query-by-text:
     method: POST
     uri: "/get-document-by-text"
