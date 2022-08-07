@@ -50,6 +50,7 @@ spring:
 security:
   logout-success-url: http://localhost:8184/elastic-query-web-client
   default-client-registration-id: keycloak
+
 user-config: # needed for security configuration
   username: test
   # using encrypted password with JCE (See WebSecurityConfig.class)
