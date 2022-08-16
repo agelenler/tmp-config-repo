@@ -2,7 +2,7 @@ elastic-query-service:
   version: v1
   custom-audience: elastic-query-service
   webclient:
-    connect-timeout-millis: 10000
+    connect-timeout-ms: 10000
     read-timeout-ms: 10000
     write-timeout-ms: 10000
     max-in-memory-size: 10485760 # 10MB
@@ -30,7 +30,7 @@ spring:
         registration: # will be calling kafka-streams-service to get aggregated analytics data
           keycloak:
             client-id: 'elastic-query-service'
-            client-secret: 'pC1NKd9rQQIm5cF3sDGuNysH0cVRvsDN'
+            client-secret: '{cipher}464fa7d7f399b988c39be80342a41c9dae178ba3e07bc6c341ffd127d96be488f58f722e2d8ba7af2d3e8af2f0699ee6e31e31dc99a7733a74c49719dfe65757'
             authorizationGrantType: client_credentials # client_credentials is used for M2M communication (instead of authorization_code_flow) and there is no user interaction required
         provider:
           keycloak:
