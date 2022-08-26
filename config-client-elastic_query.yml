@@ -11,11 +11,11 @@ elastic-query-service:
     query-type: 'ANALYTICS_DATABASE' # or 'KAFKA_STATE_STORE' to avoid DB access
   query-from-kafka-state-store:
     method: GET
-    uri: "http://localhost:8187/kafka-streams-service/get-word-count-by-word/{word}"
+    uri: "http://kafka-streams-service/kafka-streams-service/get-word-count-by-word/{word}" # with discovery service we need to use service names
     accept: ${elastic-query-service.webclient.accept-type}
   query-from-analytics-database:
     method: GET
-    uri: "http://localhost:8188/analytics-service/get-word-count-by-word/{word}"
+    uri: "http://analytics-service/analytics-service/get-word-count-by-word/{word}" # with discovery service we need to use service names
     accept: ${elastic-query-service.webclient.accept-type}
 
 server:
@@ -24,6 +24,10 @@ server:
     context-path: /elastic-query-service # required to set up context path for web application
 
 spring:
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false # false to use spring boot load balancer instead of Eureka's load balancer
   security:
     oauth2:
       resourceserver:

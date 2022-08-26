@@ -14,23 +14,28 @@ elastic-query-web-client: # this prefix requires class with prefix "elastic-quer
     # until the load balancer will be configured, we'll use localhost:8183
     #base-url: 'http://localhost:8183/elastic-query-service/documents' # was used before client side load balancer
     base-url: 'http://elastic-query-service/elastic-query-service/documents' # base URL we want to connect to with this client
-    # add service name and instances for loadbalancer to use
-    service-id: elastic-query-service
-    instances:
-      -
-        id: elastic-query-service-1
-        host: localhost
-        port: 8183
-      -
-        id: elastic-query-service-2
-        host: localhost
-        port: 8186
+  # NOT NEEDED ANYMORE AS WE ARE USING EUREKA
+  # add service name and instances for loadbalancer to use
+  #    service-id: elastic-query-service
+  #    instances:
+  #      -
+  #        id: elastic-query-service-1
+  #        host: localhost
+  #        port: 8183
+  #      -
+  #        id: elastic-query-service-2
+  #        host: localhost
+  #        port: 8186
   query-by-text:
     method: POST
     uri: "/get-document-by-text"
     accept: ${elastic-query-web-client.webclient.accept-type} # using ${...} to reuse previously defined variable in YML
 
 spring:
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false # false to use spring boot load balancer instead of Eureka's load balancer
   thymeleaf:
     cache: false # setting Thymeleaf cache to false allows Thymeleaf web page to be reloaded when there are changes during development
   security:

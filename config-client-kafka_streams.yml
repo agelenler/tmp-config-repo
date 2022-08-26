@@ -7,6 +7,10 @@ server:
     context-path: /kafka-streams-service
 
 spring:
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false # false to use spring boot load balancer instead of Eureka's load balancer
   security:
     oauth2:
       resourceserver:

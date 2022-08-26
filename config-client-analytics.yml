@@ -8,6 +8,10 @@ analytics-service:
   custom-audience: analytics-service
 
 spring:
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false # false to use spring boot load balancer instead of Eureka's load balancer
   security:
     oauth2:
       resourceserver:
