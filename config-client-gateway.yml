@@ -1,0 +1,76 @@
+gateway-service: # these properties will be used for resilience4j configuration
+  timeout-ms: 3000
+  failure-rate-threshold: 50 # 50% failure rate
+  slow-call-rate-threshold: 50
+  slow-call-duration-threshold: 50
+  permitted-num-of-calls-in-half-open-state: 10 # limit of requests in half-opened state, and it will check the percentage in half-opened state again to decide whether to OPEN or CLOSE the circuit
+  sliding-window-size: 10 # so, for each 10 records, if more than 50% calls timeout, circuit will be opened and requests forwarded to fallback URI
+  min-number-of-calls: 10
+  wait-duration-in-open-state: 60000 # while circuit is opened, program will wait this time in opened state, after this time passes, state will be switched to half-opened, which means incoming requests start to processed again
+
+server:
+  port: 9090
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false # because we want to use spring cloud load balancer
+    gateway:
+      discovery:
+        locator:
+          enabled: false # because we want to customize route definitions here in config, instead getting them from discovery preconfigured values with reactive-composite-discovery-client prefix; also our own routes would be overwritten if this option stays true
+          lowerCaseServiceId: true
+      routes:
+        - id: elastic-query-service
+          uri: lb://elastic-query-service # lb: means that elastic-query-service name will be fetched from discovery service
+          predicates:
+            - Path=/elastic-query-service/** # matches all paths that start with elastic query service
+          filters:
+            - RewritePath=/elastic-query-service/(?<path>.*), /$\{path} # getting only the part that comes with '**' from above predicate; we will remove context path from services to make the URI simple
+            - name: RequestRateLimiter # for this filter, rate limiter uses Token bucket algorithm, which will fill tokens in each second and spend them when user sends request
+              args:
+                redis-rate-limiter.replenishRate: 5 # limit requests per second to 5; other requests will be dropped; this value is used to fill the token in algorithm
+                redis-rate-limiter.burstCapacity: 10 # user gets to use 10 tokens right away (), so it means that until 2nd second passes, all user requests will be dropped as user used all of it's available tokens/requests right away; here 1 token = 1 request
+                key-resolver: "#{@authHeaderResolver}" # key resolver bean with spring expression; bean authHeaderResolver defined in GatewayConfig class
+            - name: CircuitBreaker # will return fallback result using a fallback controller in case service is not reachable
+              args:
+                name: queryServiceCircuitBreaker
+                fallbackUri: forward:/fallback/query-fallback
+        - id: analytics-service
+          uri: lb://analytics-service
+          predicates:
+            - Path=/analytics-service/**
+          filters:
+            - RewritePath=/analytics-service/(?<path>.*), /$\{path}
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 5
+                redis-rate-limiter.burstCapacity: 10
+                key-resolver: "#{@authHeaderResolver}"
+            - name: CircuitBreaker
+              args:
+                name: analyticsServiceCircuitBreaker
+                fallbackUri: forward:/fallback/analytics-fallback
+        - id: kafka-streams-service
+          uri: lb://kafka-streams-service
+          predicates:
+            - Path=/kafka-streams-service/**
+          filters:
+            - RewritePath=/kafka-streams-service/(?<path>.*), /$\{path}
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 5
+                redis-rate-limiter.burstCapacity: 10
+                key-resolver: "#{@authHeaderResolver}"
+            - name: CircuitBreaker
+              args:
+                name: streamsServiceCircuitBreaker
+                fallbackUri: forward:/fallback/streams-fallback
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
+# route differences only in id, uri, predicates, filters and fallback controller
