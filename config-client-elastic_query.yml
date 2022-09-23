@@ -38,7 +38,7 @@ spring:
         registration: # will be calling kafka-streams-service to get aggregated analytics data
           keycloak:
             client-id: 'elastic-query-service'
-            client-secret: 'e3f4652d-4a29-4b21-a9e2-51e2ad110122'
+            client-secret: 'Wnfo3GDjQR4nKnYjIEoW4UrO3fCmQoNV'
             authorizationGrantType: client_credentials # client_credentials is used for M2M communication (instead of authorization_code_flow) and there is no user interaction required
         provider:
           keycloak:
