@@ -44,13 +44,13 @@ spring:
         registration:
           keycloak:
             client-id: 'elastic-query-web-client'
-            client-secret: '{cipher}ca4b1ae867212bd1543a435f74a4b2b6d25cbf1b9c94e2bcc665e6df599f841de86c39503e2de0b1de8d6f2d863092afaadeaf4093fd5aaea6174f2a927c57dc'
+            client-secret: '851a125f-7914-47da-bbeb-ec528c1755a6'
             authorization-grant-type: authorization_code
             redirect-uri: '{baseUrl}/login/oauth2/code/{registrationId}'
             scope: openid
         provider:
           keycloak:
-            issuerUri: http://localhost:9091/realms/microservices-realm
+            issuerUri: http://localhost:9091/auth/realms/microservices-realm
 
 security:
   logout-success-url: http://localhost:8184/elastic-query-web-client
@@ -59,7 +59,7 @@ security:
 user-config: # needed for security configuration
   username: test
   # using encrypted password with JCE (See WebSecurityConfig.class)
-  password: '{cipher}8a3bffc96be1241f6702cf5b3246b3b793d53f68b5d45016aa8e369ade5fca8d'
+  password: 'test1234'
   # using BCrypted and then encrypted password with JCE
   #password: '{cipher}d1136ee06e6b4905eb6d7eae56d07e43cfd83b4ab2ad7ec7ec1dd2e196f6da8e45d644c33b9218ac74527bc1df1758219f72e51839ece714f04bbbf42c90dd7002a89cfd36ea9190ffd07375336a2247'
   roles: USER
