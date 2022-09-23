@@ -16,8 +16,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:9091/realms/microservices-realm
-          jwk-set-uri: http://localhost:9091/realms/microservices-realm/protocol/openid-connect/certs
+          issuer-uri: http://localhost:9091/auth/realms/microservices-realm
+          jwk-set-uri: http://localhost:9091/auth/realms/microservices-realm/protocol/openid-connect/certs
   jpa:
     open-in-view: false
     show-sql: true
@@ -33,7 +33,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres?currentSchema=analytics&binaryTransfer=true&reWriteBatchedInserts=true
     username: postgres
-    password: postgres
+    password: admin
     driver-class-name: org.postgresql.Driver
     platform: postgres
 
