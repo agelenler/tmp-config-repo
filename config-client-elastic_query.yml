@@ -42,7 +42,7 @@ spring:
             authorizationGrantType: client_credentials # client_credentials is used for M2M communication (instead of authorization_code_flow) and there is no user interaction required
         provider:
           keycloak:
-            tokenUri: http://localhost:9091/auth/realms/microservices-realm/protocol/openid-connect/token
+            tokenUri: http://localhost:9091/realms/microservices-realm/protocol/openid-connect/token
   jpa:
     open-in-view: false # by default, it is true, and it uses persistent context to stay opened which is bad for performance
     show-sql: true
